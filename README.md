@@ -2,6 +2,8 @@
 
 An example of how to share a GL/GLES texture in EGL context between different processes by using DMA-BUF.
 
+Detailed explanation is in [this blog post](https://blaztinn.gitlab.io/post/dmabuf-texture-sharing/).
+
 Prerequisites:
 
   - Linux OS (for dma-buf and [unix domain sockets](https://en.wikipedia.org/wiki/Unix_domain_socket))
