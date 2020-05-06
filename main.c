@@ -84,13 +84,14 @@ int main(int argc, char **argv)
         // If we don't call these extension functions the texture is properly displayed
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 2, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
-        glFlush();
+        //glFlush();
 
         // EGL (extension: EGL_MESA_image_dma_buf_export): Get file descriptor (texture_dmabuf_fd) for the EGL image and get its
         // storage data (texture_storage_metadata - fourcc, stride, offset)
         int texture_dmabuf_fd;
         struct texture_storage_metadata_t texture_storage_metadata;
 
+        /*
         PFNEGLEXPORTDMABUFIMAGEQUERYMESAPROC eglExportDMABUFImageQueryMESA =
             (PFNEGLEXPORTDMABUFIMAGEQUERYMESAPROC)eglGetProcAddress("eglExportDMABUFImageQueryMESA");
         EGLBoolean queried = eglExportDMABUFImageQueryMESA(egl_display,
@@ -99,6 +100,7 @@ int main(int argc, char **argv)
                                                            NULL,
                                                            NULL);
         assert(queried);
+        */
         PFNEGLEXPORTDMABUFIMAGEMESAPROC eglExportDMABUFImageMESA =
             (PFNEGLEXPORTDMABUFIMAGEMESAPROC)eglGetProcAddress("eglExportDMABUFImageMESA");
         EGLBoolean exported = eglExportDMABUFImageMESA(egl_display,
@@ -107,6 +109,7 @@ int main(int argc, char **argv)
                                                        &texture_storage_metadata.stride,
                                                        &texture_storage_metadata.offset);
         assert(exported);
+        /*
 
         // Unix Domain Socket: Send file descriptor (texture_dmabuf_fd) and texture storage data (texture_storage_metadata)
         int sock = create_socket(SERVER_FILE);
@@ -115,6 +118,7 @@ int main(int argc, char **argv)
         write_fd(sock, texture_dmabuf_fd, &texture_storage_metadata, sizeof(texture_storage_metadata));
         close(sock);
         close(texture_dmabuf_fd);
+        */
     }
     else
     {
