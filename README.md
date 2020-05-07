@@ -15,7 +15,7 @@ Prerequisites:
 
 Build:
 
-``` c++
+``` bash
 $ make
 ```
 
