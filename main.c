@@ -67,6 +67,7 @@ int main(int argc, char **argv)
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 2, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -77,13 +78,9 @@ int main(int argc, char **argv)
                                         (EGLClientBuffer)(uint64_t)texture,
                                         NULL);
         assert(image != EGL_NO_IMAGE);
-
-        // Not sure why next lines are needed. If they are not present before calling EGL_MESA_image_dma_buf_export
-        // extension functions the texture is not displayed (both on server and client) until the next texture data
-        // upload.
-        // If we don't call these extension functions the texture is properly displayed
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 2, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+        
+        // The next line works around an issue in radeonsi driver (fixed in master at the time of writing). If you are
+        // not having problems with texture rendering until the first texture update you can omit this line
         glFlush();
 
         // EGL (extension: EGL_MESA_image_dma_buf_export): Get file descriptor (texture_dmabuf_fd) for the EGL image and get its
