@@ -91,8 +91,8 @@ int main(int argc, char **argv)
         // GL: Create and populate the texture
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 3072, 1355, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 3072, 1355, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 3072, 1355, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 3072, 1355, GL_BGRA, GL_UNSIGNED_BYTE, buffer);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 

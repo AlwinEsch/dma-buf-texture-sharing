@@ -92,14 +92,13 @@ void gl_setup_scene()
 
     // quad
     float vertices[] = {
-        0.5f, 0.5f, 0.0f, 0.0f, 0.0f,   // top right
-        0.5f, -0.5f, 0.0f, 1.0f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, // bottom left
-        -0.5f, 0.5f, 0.0f, 0.0f, 1.0f   // top left
+        -0.9f, 0.9f, 0.0f, 0.0f, 0.0f,   // top right
+        0.9f, 0.9f, 0.0f, 1.0f, 0.0f,  // bottom right
+        0.9f, -0.9f, 0.0f, 1.0f, 1.0f, // bottom left
+        -0.9f, -0.9f, 0.0f, 0.0f, 1.0f   // top left
     };
     unsigned int indices[] = {
-        0, 1, 3, // first Triangle
-        1, 2, 3  // second Triangle
+        0, 1, 3, 2
     };
 
     unsigned int VBO, VAO, EBO;
@@ -138,5 +137,5 @@ void gl_draw_scene(GLuint texture)
     // VAO and shader program are already bound from the call to gl_setup_scene
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, 0);
 }
