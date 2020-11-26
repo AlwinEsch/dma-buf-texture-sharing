@@ -40,7 +40,32 @@ int main(int argc, char **argv)
     gl_setup_scene();
 
     // Server texture data { red, greee, blue, white }
-    int texture_data[4] = {0x000000FF, 0x0000FF00, 0X00FF0000, 0x00FFFFFF};
+//     int texture_data[4] = {0x000000FF, 0x0000FF00, 0X00FF0000, 0x00FFFFFF};
+    FILE *pFile = fopen("./test.data" , "rb");
+    if (pFile==NULL)
+    {
+      fputs ("File error",stderr);
+      exit (1);
+    }
+
+    fseek(pFile , 0 , SEEK_END);
+    size_t lSize = ftell(pFile);
+    rewind(pFile);
+    char *buffer = (char*)malloc(sizeof(char)*lSize);
+    if (buffer == NULL)
+    {
+      fputs ("Memory error",stderr);
+      exit (2);
+    }
+
+    size_t result = fread (buffer,1,lSize,pFile);
+    if (result != lSize)
+    {
+      fputs ("Reading error",stderr);
+      exit (3);
+    }
+
+    fclose (pFile);
 
     // -----------------------------
     // --- Texture sharing start ---
@@ -66,8 +91,8 @@ int main(int argc, char **argv)
         // GL: Create and populate the texture
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2, 2, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 2, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 3072, 1355, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 3072, 1355, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -126,8 +151,8 @@ int main(int argc, char **argv)
         // EGL (extension: EGL_EXT_image_dma_buf_import): Create EGL image from file descriptor (texture_dmabuf_fd) and storage
         // data (texture_storage_metadata)
         EGLAttrib const attribute_list[] = {
-            EGL_WIDTH, 2,
-            EGL_HEIGHT, 2,
+            EGL_WIDTH, 3072,
+            EGL_HEIGHT, 1355,
             EGL_LINUX_DRM_FOURCC_EXT, texture_storage_metadata.fourcc,
             EGL_DMA_BUF_PLANE0_FD_EXT, texture_dmabuf_fd,
             EGL_DMA_BUF_PLANE0_OFFSET_EXT, texture_storage_metadata.offset,
@@ -160,19 +185,19 @@ int main(int argc, char **argv)
         gl_draw_scene(texture);
         eglSwapBuffers(egl_display, egl_surface);
 
-        // Update texture data each second to see that the client didn't just copy the texture and is indeed referencing
-        // the same texture data.
-        if (is_server)
-        {
-            time_t cur_time = time(NULL);
-            if (last_time < cur_time)
-            {
-                last_time = cur_time;
-                rotate_data(texture_data);
-                glBindTexture(GL_TEXTURE_2D, texture);
-                glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 2, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
-            }
-        }
+//         // Update texture data each second to see that the client didn't just copy the texture and is indeed referencing
+//         // the same texture data.
+//         if (is_server)
+//         {
+//             time_t cur_time = time(NULL);
+//             if (last_time < cur_time)
+//             {
+//                 last_time = cur_time;
+//                 rotate_data(texture_data);
+//                 glBindTexture(GL_TEXTURE_2D, texture);
+//                 glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 3072, 1355, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+//             }
+//         }
 
         // Check for errors
         assert(glGetError() == GL_NO_ERROR);
