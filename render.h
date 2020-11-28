@@ -22,9 +22,12 @@ void initialize_egl(Display *x11_display, Window x11_window, EGLDisplay *egl_dis
     EGLConfig config;
     EGLint num_config;
     EGLint const attribute_list_config[] = {
+        EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+        EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT,
         EGL_RED_SIZE, 8,
         EGL_GREEN_SIZE, 8,
         EGL_BLUE_SIZE, 8,
+        EGL_ALPHA_SIZE, 8,
         EGL_NONE};
     eglChooseConfig(display, attribute_list_config, &config, 1, &num_config);
 
@@ -73,6 +76,8 @@ void gl_setup_scene()
                                          "   FragColor = texture(Texture1, TexCoords);\n"
                                          "}\0";
 
+
+
     // vertex shader
     int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
@@ -91,6 +96,18 @@ void gl_setup_scene()
     glDeleteShader(fragment_shader);
 
     // quad
+//     float vertices[] = {
+//         1.0f, 1.0f, -1.0f, 0.0f, 0.0f,   // top right
+//         1.0f, -1.0f, -1.0f, 1.0f, 0.0f,  // bottom right
+//         -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, // bottom left
+//         -1.0f, 1.0f, -1.0f, 0.0f, 1.0f   // top left
+//     };
+//     unsigned int indices[] = {
+//         0, 1, 3, // first Triangle
+//         1, 2, 3  // second Triangle
+//     };
+
+
     float vertices[] = {
         -0.9f, 0.9f, 0.0f, 0.0f, 0.0f,   // top right
         0.9f, 0.9f, 0.0f, 1.0f, 0.0f,  // bottom right
@@ -118,6 +135,7 @@ void gl_setup_scene()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
 
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);
@@ -130,8 +148,8 @@ void gl_setup_scene()
 void gl_draw_scene(GLuint texture)
 {
     // clear
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+//     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+//     glClear(GL_COLOR_BUFFER_BIT);
 
     // draw quad
     // VAO and shader program are already bound from the call to gl_setup_scene

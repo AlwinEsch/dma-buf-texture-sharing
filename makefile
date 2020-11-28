@@ -1,7 +1,7 @@
 all: dmabufshare
 
-dmabufshare: main.c socket.h window.h render.h
-	$(CC) main.c -g -lEGL -lGL -lX11 -o dmabufshare
+dmabufshare: main.cpp socket.h window.h render.h
+	$(CXX) main.cpp -g -lEGL -lGL -lX11 -o dmabufshare
 
 clean:
 	rm -f dmabufshare
