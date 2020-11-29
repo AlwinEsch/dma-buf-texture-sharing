@@ -15,11 +15,11 @@
 
 #include "kodi/gui/gl/Shader.h"
 
-class ATTRIBUTE_HIDDEN CRendererOpenGL : public kodi::gui::gl::CShaderProgram
+class ATTRIBUTE_HIDDEN CViewRendererOpenGL : public kodi::gui::gl::CShaderProgram
 {
 public:
-  CRendererOpenGL(const std::string& socketClientFile);
-  ~CRendererOpenGL();
+  CViewRendererOpenGL(const std::string& socketClientFile);
+  ~CViewRendererOpenGL();
 
   bool Init();
   void Deinit();
@@ -42,7 +42,7 @@ private:
   const std::string m_socketClientFile;
 
   EGLDisplay m_eglDisplay = EGL_NO_DISPLAY;
-  EGLImage m_image = EGL_NO_IMAGE;
+  EGLImageKHR m_image = EGL_NO_IMAGE_KHR;
 
   GLuint m_vertexVBO = 0;
   GLuint m_indexVBO = 0;

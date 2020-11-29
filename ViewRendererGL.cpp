@@ -5,23 +5,23 @@
  *  See LICENSE.md for more information.
  */
 
-#include "RendererGL.h"
+#include "ViewRendererGL.h"
 #include "OpenGLExtensionCheck.h"
 
 #include "share_data.h"
 #include "socket.h"
 
-CRendererOpenGL::CRendererOpenGL(const std::string& socketClientFile)
+CViewRendererOpenGL::CViewRendererOpenGL(const std::string& socketClientFile)
   : m_socketClientFile(socketClientFile)
 {
 }
 
-CRendererOpenGL::~CRendererOpenGL()
+CViewRendererOpenGL::~CViewRendererOpenGL()
 {
   Deinit();
 }
 
-bool CRendererOpenGL::Init()
+bool CViewRendererOpenGL::Init()
 {
   std::string vertShader, fraqShader;
   GetShaderPath(vertShader, fraqShader);
@@ -118,7 +118,7 @@ bool CRendererOpenGL::Init()
   return true;
 }
 
-void CRendererOpenGL::Deinit()
+void CViewRendererOpenGL::Deinit()
 {
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, 0);
@@ -134,7 +134,7 @@ void CRendererOpenGL::Deinit()
   m_indexVBO = 0;
 }
 
-void CRendererOpenGL::Render()
+void CViewRendererOpenGL::Render()
 {
   glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_STATIC_DRAW);
@@ -159,18 +159,18 @@ void CRendererOpenGL::Render()
   glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void CRendererOpenGL::OnCompiledAndLinked()
+void CViewRendererOpenGL::OnCompiledAndLinked()
 {
   m_aPosition = glGetAttribLocation(ProgramHandle(), "aPos");
   m_aCoord = glGetAttribLocation(ProgramHandle(), "aTexCoords");
 }
 
-bool CRendererOpenGL::OnEnabled()
+bool CViewRendererOpenGL::OnEnabled()
 {
   return true;
 }
 
-void CRendererOpenGL::GetShaderPath(std::string& vert, std::string& frag)
+void CViewRendererOpenGL::GetShaderPath(std::string& vert, std::string& frag)
 {
   std::string path;
 

@@ -1,4 +1,4 @@
-#include "RendererGL.h"
+#include "ViewRendererGL.h"
 
 const char *CLIENT_FILE = "/tmp/test_client";
 
@@ -51,12 +51,12 @@ int main(int argc, char **argv)
   glGenVertexArrays(1, &VAO);
   glBindVertexArray(VAO);
 
-  CRendererOpenGL renderer(CLIENT_FILE);
+  CViewRendererOpenGL renderer(CLIENT_FILE);
   if (!renderer.Init())
     return 1;
 
   bool quit = false;
-  while (1)
+  while (!quit)
   {
     // Draw scene (uses shared texture)
     // clear
