@@ -193,7 +193,7 @@ void CWorkRendererGL::Render(uint8_t* buffer, GLint format)
   glBindTexture(GL_TEXTURE_2D, m_texture);
   glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
 
-  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 3072, 1355, format, GL_UNSIGNED_BYTE, buffer);
+  glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, format, GL_UNSIGNED_BYTE, buffer);
 
   glBindBuffer(GL_ARRAY_BUFFER, m_vertexVBO);
   glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices), m_vertices, GL_STATIC_DRAW);
